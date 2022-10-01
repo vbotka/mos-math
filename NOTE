@@ -1,0 +1,41 @@
+# NOTES
+
+
+## Create $HOME/.pypirc
+
+shell> cat ~/.pypirc
+[testpypi]
+  username = __token__
+    password = <api-token>
+
+[pypi]
+  username = __token__
+    password = <api-token>
+
+
+## Update package
+
+* Make changes and bump version in pyproject.toml
+
+* Build the project
+
+python3 -m build
+
+* Upload the new version to https://pypi.org/project/mos-math/
+
+python3 -m twine upload dist/*
+
+
+## References
+
+* Packaging Python Projects
+  https://packaging.python.org/en/latest/tutorials/packaging-projects/#packaging-python-projects
+
+* Modules
+  https://docs.python.org/3/tutorial/modules.html#packages
+
+* Using TestPyPI
+  https://packaging.python.org/en/latest/guides/using-testpypi/
+
+
+# EOF

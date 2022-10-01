@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mos_math"
+version = "0.0.1"
+authors = [
+  { name="Vladimir Botka", email="vbotka@gmail.com" },
+  ]
+description = "MOS (Metal Oxide Semiconductor) mathematics for C-V measurements."
+readme = "README.md"
+license = "BSD-2-Clause"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/vbotka/mos-math"
+"Bug Tracker" = "https://github.com/vbotka/mos-math/issues"
