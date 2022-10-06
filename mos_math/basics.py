@@ -8,6 +8,7 @@ k = 1.38e-23
 T = 300
 q = 1.602e-19
 ni = 1.45e16
+beta = k * T / q
 
 
 def clf_from_fi(fn, vg, fnorm, gtype, f_critical=0.1, no_filter_points=7):
@@ -32,7 +33,7 @@ def dit_from_clf_chf(clf, chf, cox):
 
 def eband_of_dit(fn, fnorm, bulk, stype):
     ''' Position of Dit in the forbiden band '''
-    ff = (k * T / q) * numpy.log(bulk / ni)
+    ff = beta * numpy.log(bulk / ni)
     if stype == 'P':
         ff = - ff
     return [((1.0 - f) * fnorm + 0.56 + ff) for f in fn]
