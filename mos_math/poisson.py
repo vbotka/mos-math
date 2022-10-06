@@ -14,13 +14,65 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 import math
+import numpy as np
+
+
+def poisn(u1, uf, x, alfa, h, ipn, ulimt, ulimu, mode):
+
+    u = np.zeros(shape=(ipn))
+    v = np.zeros(shape=(ipn))
+    f = np.zeros(shape=(ipn))
+    e = np.zeros(shape=(ipn))
+    w = np.zeros(shape=(ipn))
+    z = np.zeros(shape=(ipn))
+    ff = np.zeros(shape=(ipn))
+
+    u[0] = u1
+    if mode == 3:
+        v[0] = math.sqrt(2.0 * (math.exp(u1) - u1 - 1))
+    else:
+        v[0] = math.sqrt(2.0 * (math.exp(u1) + math.exp(2.0 * uf - u1) - u1 - 1))
+    f[0] = dv(x[0], u[0], v[0], uf, alfa[0], mode)
+
+    w[0] = 0.01
+    if mode == 1:
+        z[0] = w[0] * (math.exp(u1) - math.exp(2.0 * uf - u1) - 1.0) / v[0]
+    else:
+        z[0] = w[0] * (math.exp(u1) - 1.0) / v[0]
+    ff[0] = dz(x[0], w[0], u[0], uf, alfa[0], mode)
+
+    for i in range(4):
+        e[i + 1] = 0.0
+        u[i + 1], v[i + 1], w[i + 1], z[i + 1], f[i + 1], ff[i + 1] = \
+            RungeKutta2(x[i], u[i], v[i], w[i], z[i], f[i], ff[i], x[i + 1], h, uf, alfa, mode)
+        us, istat = umarg(u[i + 1], ulimt, ulimu)
+        if istat:
+            return
+
+    for i in range(4, ipn):
+        PredictorCorrector2(x, u, v, w, z, f, ff, e, h, i, uf, alfa[i], mode)
+        us, istat = umarg(u[i + 1], ulimt, ulimu)
+        if istat:
+            return
+    #      us          dus         beta        gama
+    return u[ipn - 1], v[ipn - 1], w[ipn - 1], z[ipn - 1], istat
+
+
+def umarg(u, ulimt, ulimu):
+    if u > 0.0:
+        if u > ulimu:
+            return u, True
+    else:
+        if(abs(u) > ulimt):
+            return u, True
+    return 0.0, False
 
 
 def PredictorCorrector2(x, u, v, w, z, f, ff, e, h, i, uf, alfa, mode):
     ''' Predictor-Corrector 2nd order '''
 
-    a = [+2.29166666666667, -2.45833333333333, +1.54166666666667, -0.37500000000000]
-    b = [+0.37500000000000, +0.79166666666667, -0.20833333333333, +0.04166666666667]
+    a = np.array([+2.29166666666667, -2.45833333333333, +1.54166666666667, -0.37500000000000])
+    b = np.array([+0.37500000000000, +0.79166666666667, -0.20833333333333, +0.04166666666667])
     c = 0.07037037037037
 
 # predictor
