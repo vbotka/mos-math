@@ -47,13 +47,13 @@ def poisn(u1, uf, x, alfa, h, ipn, ulimt, ulimu, mode):
             RungeKutta2(x[i], u[i], v[i], w[i], z[i], f[i], ff[i], x[i + 1], h, uf, alfa, mode)
         us, istat = umarg(u[i + 1], ulimt, ulimu)
         if istat:
-            return
+            return 0, 0, 0, 0, istat
 
     for i in range(4, ipn):
         PredictorCorrector2(x, u, v, w, z, f, ff, e, h, i, uf, alfa[i], mode)
         us, istat = umarg(u[i + 1], ulimt, ulimu)
         if istat:
-            return
+            return 0, 0, 0, 0, istat
     #      us          dus         beta        gama
     return u[ipn - 1], v[ipn - 1], w[ipn - 1], z[ipn - 1], istat
 
